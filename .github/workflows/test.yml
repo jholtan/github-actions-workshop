@@ -4,6 +4,9 @@ on:
   pull_request:
     branches:
       - main
+  workflow_dispatch:
+
+
 jobs:
   test:
     name: Build
@@ -23,18 +26,19 @@ jobs:
 
       - name: Test
         run: go test -v ./...
+
   lint:
     name: Lint
     runs-on: 'ubuntu-latest'
     steps:
-    - uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
-    - name: Setup go
-      uses: actions/setup-go@v5
-      with:
-        go-version: '1.21.x'
+      - name: Setup go
+        uses: actions/setup-go@v5
+        with:
+          go-version: '1.21.x'
 
-    - name: Verify formatting
-      run: |
-        no_unformatted_files="$(gofmt -l $(git ls-files '*.go') | wc -l)"
-        exit "$no_unformatted_files"
+      - name: Verify formatting
+        run: |
+          no_unformatted_files="$(gofmt -l $(git ls-files '*.go') | wc -l)"
+          exit "$no_unformatted_files"
